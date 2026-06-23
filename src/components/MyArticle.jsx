@@ -1,4 +1,6 @@
 export default function Myarticle({ title, desc }) {
+  console.log("article render");
+
   return (
     <section>
       <article>
