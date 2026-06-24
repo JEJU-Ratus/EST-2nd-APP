@@ -16,7 +16,7 @@ export default function UpdateArticle({ title, desc, onSubmit }) {
   });
 
   const handleChange = e => {
-    const { name, value } = e.target;
+    const [name, value] = e.target;
     setContent(prev => {
       return {
         ...prev,
