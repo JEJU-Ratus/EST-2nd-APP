@@ -2,10 +2,11 @@ import "./App.css";
 import Myheader from "./components/Myheader";
 import Nav from "./components/Nav";
 import Myarticle from "./components/MyArticle";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Controls from "./components/Controls";
 import CreateArticle from "./components/CreateArticle";
 import UpdateArticle from "./components/UpdateArticel";
+import { v4 as uuidv4 } from "uuid";
 // Myheader 컴포넌트
 
 function App() {
@@ -19,21 +20,28 @@ function App() {
     desc: "기본언어인 html, css, javascript부터 학습합니다.",
   });
   const [content, setContent] = useState([
-    { id: 1, title: "UI/UX 개발", desc: "사용자 경험을 고려한 직관적이고 반응성 높은 화면 구현" },
     {
-      id: 2,
+      id: "1",
+      title: "UI/UX 개발",
+      desc: "사용자 경험을 고려한 직관적이고 반응성 높은 화면 구현",
+      level: 1,
+    },
+    {
+      id: "2",
       title: "재사용이 가능한 UI 개발",
       desc: "컴포넌트 기반으로 동일한 UI를 효율적으로 재사용 가능",
+      level: 3,
     },
-    { id: 3, title: "애니메이션 구현", desc: "상태 변화에 따른 자연스럽고 동적인 화면 효과 구현" },
+    {
+      id: "3",
+      title: "애니메이션 구현",
+      desc: "상태 변화에 따른 자연스럽고 동적인 화면 효과 구현",
+      level: 5,
+    },
   ]);
-  const [maxId, setMaxId] = useState(3);
+  // const [maxId, setMaxId] = useState(3);
 
   const welcome = { title: "welcome", desc: "welcome to react" };
-  // 모드에 따른 출력
-  let _title = null;
-  let _desc = null;
-  let _article = null;
 
   const handleDelete = () => {
     if (window.confirm("정말 삭제할까요?")) {
@@ -44,20 +52,30 @@ function App() {
     }
   };
 
+  // id를 비교하여 해당 id와 일치하는 객체를 출력
+  const selectedArticle = useMemo(() => content.find(c => c.id === id), [content, id]);
+
+  // 모드에 따른 출력
+  let _title = null;
+  let _desc = null;
+  let _level = null;
+  let _article = null;
+
   if (mode === "welcome") {
     _title = welcome.title;
     _desc = welcome.desc;
     _article = <Myarticle title={_title} desc={_desc} />;
   } else if (mode === "read") {
     // read 모드일때
-    const selected = content.find(c => c.id === id);
-    if (selected) {
-      _title = selected.title;
-      _desc = selected.desc;
+    if (selectedArticle) {
+      _title = selectedArticle.title;
+      _desc = selectedArticle.desc;
+      _level = selectedArticle.level;
       _article = (
         <Myarticle
           title={_title}
           desc={_desc}
+          level={_level}
           onChangeMode={() => {
             setMode("update");
           }}
@@ -70,10 +88,10 @@ function App() {
     _article = (
       <CreateArticle
         onSubmit={(_title, _desc) => {
-          const newId = maxId + 1;
+          const newId = uuidv4();
           let _contents = content.concat({ id: newId, title: _title, desc: _desc });
           setContent(_contents);
-          setMaxId(newId);
+          // setMaxId(newId);
           setId(newId);
           setMode("read");
         }}
@@ -81,16 +99,17 @@ function App() {
     );
   } else if (mode === "update") {
     // update 모드일때
-    const selected = content.find(c => c.id === id);
-    if (selected) {
-      _title = selected.title;
-      _desc = selected.desc;
+    if (selectedArticle) {
+      _title = selectedArticle.title;
+      _desc = selectedArticle.desc;
+      _level = selectedArticle.level;
     }
     _article = (
       <UpdateArticle
         title={_title}
         desc={_desc}
-        onSubmit={(_title, _desc) => {
+        level={_level}
+        onSubmit={(_title, _desc, _level) => {
           setContent(prev =>
             prev.map(p =>
               p.id === id
@@ -98,6 +117,7 @@ function App() {
                     ...p,
                     title: _title,
                     desc: _desc,
+                    level: _level,
                   }
                 : p,
             ),

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function UpdateArticle({ title, desc, onSubmit }) {
+export default function UpdateArticle({ title, desc, onSubmit, level }) {
   console.log("UpdateArticle render");
   // const [newTitle, setNewTitle] = useState(title);
   // const [newDesc, setNewDesc] = useState(desc);
@@ -13,10 +13,11 @@ export default function UpdateArticle({ title, desc, onSubmit }) {
   const [content, setContent] = useState({
     title: title,
     desc: desc,
+    level: level,
   });
 
   const handleChange = e => {
-    const [name, value] = e.target;
+    const { name, value } = e.target;
     setContent(prev => {
       return {
         ...prev,
@@ -31,7 +32,7 @@ export default function UpdateArticle({ title, desc, onSubmit }) {
         action=""
         onSubmit={e => {
           e.preventDefault();
-          onSubmit(content.title, content.desc);
+          onSubmit(content.title, content.desc, content.level);
         }}
       >
         <div>
@@ -47,6 +48,16 @@ export default function UpdateArticle({ title, desc, onSubmit }) {
         <div>
           <label htmlFor="desc">desc</label>
           <textarea name="desc" id="desc" value={content.desc} onChange={handleChange}></textarea>
+        </div>
+        <div>
+          <label htmlFor="level">난이도</label>
+          <input
+            type="number"
+            name="level"
+            id="level"
+            value={content.level}
+            onChange={handleChange}
+          ></input>
         </div>
         <button>submit</button>
       </form>

@@ -18,6 +18,10 @@ export default function CreateArticle({ onSubmit }) {
           <label htmlFor="desc">desc</label>
           <textarea name="desc" id="desc"></textarea>
         </div>
+        <div>
+          <label htmlFor="level">난이도</label>
+          <input type="number" name="level" id="level"></input>
+        </div>
         <button>submit</button>
       </form>
     </>
