@@ -1,4 +1,4 @@
-export default function Myarticle({ title, desc, onChangeMode }) {
+export default function Myarticle({ title, desc, onChangeMode, onDelete }) {
   console.log("article render");
 
   return (
@@ -8,7 +8,7 @@ export default function Myarticle({ title, desc, onChangeMode }) {
         <p>{desc}</p>
       </article>
       <button onClick={() => onChangeMode()}>수정</button>
-      <button>삭제</button>
+      <button onClick={() => onDelete()}>삭제</button>
     </section>
   );
 }
