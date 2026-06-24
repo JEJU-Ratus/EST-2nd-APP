@@ -2,7 +2,7 @@ import "./App.css";
 import Myheader from "./components/Myheader";
 import Nav from "./components/Nav";
 import Myarticle from "./components/MyArticle";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Controls from "./components/Controls";
 import CreateArticle from "./components/CreateArticle";
 // Myheader 컴포넌트
@@ -62,6 +62,11 @@ function App() {
   } else if (mode === "update") {
     // update 모드일때
   }
+
+  const handleChangeMode = useCallback(_id => {
+    setMode("read");
+    setId(_id);
+  }, []);
   return (
     <>
       <Myheader
@@ -82,13 +87,7 @@ function App() {
         </h1>
         <p>{subject.desc}</p>
       </header> */}
-      <Nav
-        data={content}
-        onChangeMode={_id => {
-          setMode("read");
-          setId(_id);
-        }}
-      />
+      <Nav data={content} onChangeMode={handleChangeMode} />
       {_article}
       <hr />
       <Controls
