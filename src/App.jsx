@@ -5,6 +5,7 @@ import Myarticle from "./components/MyArticle";
 import { useCallback, useState } from "react";
 import Controls from "./components/Controls";
 import CreateArticle from "./components/CreateArticle";
+import UpdateArticle from "./components/UpdateArticel";
 // Myheader 컴포넌트
 
 function App() {
@@ -44,7 +45,15 @@ function App() {
     if (selected) {
       _title = selected.title;
       _desc = selected.desc;
-      _article = <Myarticle title={_title} desc={_desc} />;
+      _article = (
+        <Myarticle
+          title={_title}
+          desc={_desc}
+          onChangeMode={() => {
+            setMode("update");
+          }}
+        />
+      );
     }
   } else if (mode === "create") {
     // create 모드일때
@@ -62,6 +71,31 @@ function App() {
     );
   } else if (mode === "update") {
     // update 모드일때
+    const selected = content.find(c => c.id === id);
+    if (selected) {
+      _title = selected.title;
+      _desc = selected.desc;
+    }
+    _article = (
+      <UpdateArticle
+        title={_title}
+        desc={_desc}
+        onSubmit={(_title, _desc) => {
+          setContent(prev =>
+            prev.map(p =>
+              p.id === id
+                ? {
+                    ...p,
+                    title: _title,
+                    desc: _desc,
+                  }
+                : p,
+            ),
+          );
+          setMode("read");
+        }}
+      />
+    );
   }
 
   const handleChangeMode = useCallback(_id => {
