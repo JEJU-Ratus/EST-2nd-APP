@@ -55,7 +55,8 @@ function App() {
           let _contents = content.concat({ id: newId, title: _title, desc: _desc });
           setContent(_contents);
           setMaxId(newId);
-          console.log(_title, _desc);
+          setId(newId);
+          setMode("read");
         }}
       />
     );
