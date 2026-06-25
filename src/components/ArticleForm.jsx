@@ -20,7 +20,7 @@ export default function ArticleForm({ initTitle = "", initDesc = "", initLevel =
       action=""
       onSubmit={e => {
         e.preventDefault();
-        onSubmit(content.title.value, content.desc.value, content.level.value);
+        onSubmit(content.title, content.desc, content.level);
       }}
     >
       <div>
