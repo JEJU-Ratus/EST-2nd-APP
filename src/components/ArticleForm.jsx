@@ -1,23 +1,45 @@
-export default function ArticleForm({ onSubmit }) {
+import { useState } from "react";
+
+export default function ArticleForm({ initTitle = "", initDesc = "", initLevel = "", onSubmit }) {
+  const [content, setContent] = useState({
+    title: initTitle,
+    desc: initDesc,
+    level: initLevel,
+  });
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setContent(prev => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
   return (
     <form
       action=""
       onSubmit={e => {
         e.preventDefault();
-        onSubmit(e.target.title.value, e.target.desc.value, e.target.level.value);
+        onSubmit(content.title.value, content.desc.value, content.level.value);
       }}
     >
       <div>
         <label htmlFor="title">title</label>
-        <input type="text" id="title" name="title" />
+        <input type="text" id="title" name="title" value={content.title} onChange={handleChange} />
       </div>
       <div>
         <label htmlFor="desc">desc</label>
-        <textarea name="desc" id="desc"></textarea>
+        <textarea name="desc" id="desc" value={content.desc} onChange={handleChange}></textarea>
       </div>
       <div>
         <label htmlFor="level">난이도</label>
-        <input type="number" name="level" id="level"></input>
+        <input
+          type="number"
+          name="level"
+          id="level"
+          value={content.level}
+          onChange={handleChange}
+        ></input>
       </div>
       <button>submit</button>
     </form>
