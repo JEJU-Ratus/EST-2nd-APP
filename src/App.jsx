@@ -87,9 +87,9 @@ function App() {
     // create 모드일때
     _article = (
       <CreateArticle
-        onSubmit={(_title, _desc) => {
+        onSubmit={(_title, _desc, _level) => {
           const newId = uuidv4();
-          let _contents = content.concat({ id: newId, title: _title, desc: _desc });
+          let _contents = content.concat({ id: newId, title: _title, desc: _desc, level: _level });
           setContent(_contents);
           // setMaxId(newId);
           setId(newId);
